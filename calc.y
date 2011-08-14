@@ -3,22 +3,22 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define NO_SYMS 30
+#define NO_SYMS 40
 #define YYDEBUG 1
 
 struct symbol {
     char *name;
-    int value;
+    double value;
 };
 
 static int last_sym = 0;
 static struct symbol syms[NO_SYMS];
-static int mksym(char *, int);
-static int getsym(char *);
+static double mksym(char *, double);
+static double getsym(char *);
 %}
 %union {
     char *varname;
-    int number;
+    double number;
 }
 
 %token <number> NUM
@@ -31,7 +31,7 @@ static int getsym(char *);
 %right '^'
 %%
 
-statement: expr { printf(" = %d\n", $1); }
+statement: expr { printf(" = %f\n", $1); }
     | VAR '=' expr { mksym($1, $3); }
     ;
 
@@ -48,15 +48,16 @@ expr: NUM        { $$ = $1; }
 %%
 
 int main(void) {
+    mksym("PI", 3.141592654);
     while (1) {
         printf("> ");
         yyparse();
     }
 }
 
-static int mksym(char *sym, int value)
+static double mksym(char *sym, double value)
 {
-    if (last_sym == NO_SYMS) {
+    if (last_sym == NO_SYMS || last_sym < 0) {
         fprintf(stderr, "Too many symbols \'%s\' cannot added.\n", sym);
         exit(1);
     }
@@ -66,7 +67,7 @@ static int mksym(char *sym, int value)
     return value;
 }
 
-static int getsym(char *sym)
+static double getsym(char *sym)
 {
     register int i;
     for (i = 0; i < last_sym; i++) {

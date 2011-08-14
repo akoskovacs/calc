@@ -6,7 +6,7 @@
 
 %%
 
-[0-9]+ { yylval.number = atoi(yytext); return NUM; }
+[0-9]+(\.[0-9]+)? { yylval.number = atof(yytext); return NUM; }
 
 [-+*/()=|^] return *yytext; 
 
