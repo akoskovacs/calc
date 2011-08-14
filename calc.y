@@ -57,10 +57,18 @@ int main(void) {
 
 static double mksym(char *sym, double value)
 {
+    register int i;
     if (last_sym == NO_SYMS || last_sym < 0) {
-        fprintf(stderr, "Too many symbols \'%s\' cannot added.\n", sym);
+        fprintf(stderr, "Too many symbols \'%s\' cannot added!\n", sym);
         exit(1);
     }
+
+    // Find older definitions
+    for (i = 0; i < last_sym; i++) {
+        if (!strcmp(syms[i].name, sym))
+            syms[i].value = value;
+    }
+
     syms[last_sym].name = sym;
     syms[last_sym].value = value;
     last_sym++;
@@ -74,6 +82,6 @@ static double getsym(char *sym)
         if (!strcmp(syms[i].name, sym))
             return syms[i].value;
     }
-    fprintf(stderr, "Cannot find symbol \'%s\'.\n", sym);
+    fprintf(stderr, "Cannot find symbol \'%s\'!\n", sym);
     return 0;
 }
