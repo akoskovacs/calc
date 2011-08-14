@@ -10,7 +10,7 @@
 
 [-+*/()=|^] return *yytext; 
 
-q|quit|exit exit(0);
+q|quit|exit { printf("Bye!\n"); exit(0); }
 
 [a-zA-Z]+ { yylval.varname = strdup(yytext); return VAR; }
 
