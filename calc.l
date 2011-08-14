@@ -18,4 +18,6 @@ q|quit|exit { printf("Bye!\n"); exit(0); }
 
 \n return 0; 
 
+<<EOF>> { printf("Bye!\n"); exit(0); }
+
 %%
