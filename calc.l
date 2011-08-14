@@ -15,6 +15,7 @@ q|quit|exit { printf("Bye!\n"); exit(0); }
 [a-zA-Z]+ { yylval.varname = strdup(yytext); return VAR; }
 
 [\t ]+ ; 
+#.* ;
 
 \n return 0; 
 

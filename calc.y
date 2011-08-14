@@ -31,7 +31,7 @@ static double getsym(char *);
 %right '^'
 %%
 
-statement: expr { printf(" = %f\n", $1); }
+statement: expr { printf(" = %.3f\n", $1); }
     | VAR '=' expr { mksym($1, $3); }
     ;
 
