@@ -32,7 +32,7 @@ static int getsym(char *);
 %%
 
 statement: expr { printf(" = %d\n", $1); }
-    VAR '=' expr { mksym($3, $1); }
+    | VAR '=' expr { mksym($1, $3); }
     ;
 
 expr: NUM        { $$ = $1; }
@@ -44,7 +44,6 @@ expr: NUM        { $$ = $1; }
     | '-' expr %prec NEG { $$ = -$2; }
     | expr '^' expr { $$ = pow($1, $3); }
     |  '(' expr ')' { $$ = $2; }
-    |  '|' expr '|' { $$ = $2; }
     ;
 %%
 
@@ -71,7 +70,7 @@ static int getsym(char *sym)
 {
     register int i;
     for (i = 0; i < last_sym; i++) {
-        if (strcmp(syms[i].name, sym) == 0)
+        if (!strcmp(syms[i].name, sym))
             return syms[i].value;
     }
     fprintf(stderr, "Cannot find symbol \'%s\'.\n", sym);
